@@ -1,6 +1,7 @@
 from django.http import Http404
-from leaderboard.models import Leaderboard
-from .serializer import LeaderBoardSerializer
+from rest_framework import serializers
+from leaderboard.models import Leaderboard, Highscore
+from .serializer import HighscoreSerializer, LeaderBoardSerializer
 
 # Create your views here.
 from rest_framework.views import APIView
@@ -16,4 +17,17 @@ class LeaderboardView(APIView):
     def get(self, request, pk):
         leaderboard = self.get_object(pk)
         serializer = LeaderBoardSerializer(leaderboard)
+        return Response(serializer.data)
+
+class HighscoreView(APIView):
+    def get_object(self, pk):
+        try:
+            return Highscore.objects.get(pk=pk)
+        except Highscore.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk):
+        highscore = self.get_object(pk)
+        print(highscore.score)
+        serializer = HighscoreSerializer(highscore)
         return Response(serializer.data)

@@ -1,8 +1,14 @@
-from django.db.models import fields
 from rest_framework import serializers
-from .models import Leaderboard, Player
+from .models import Highscore, Leaderboard, Player
+
+class HighscoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Highscore
+        fields = ["score", "player"]
 
 class LeaderBoardSerializer(serializers.ModelSerializer):
+    highscores = HighscoreSerializer(many=True, read_only=True)
     class Meta:
+        # ordering = ["highscores.score"]
         model = Leaderboard
-        fields = "__all__"
+        fields = ["leaderboard_name", "highscores"]

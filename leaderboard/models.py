@@ -18,9 +18,8 @@ class Highscore(models.Model):
     score = PositiveIntegerField()
 
     def __str__(self):
-        return self.player + self.score
-    
-    
+        return str(self.player)
+        # return f"{str(self.player)} - {str(self.score)}"
 
 
 class Leaderboard(models.Model):
